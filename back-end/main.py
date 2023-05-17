@@ -1,58 +1,67 @@
 import os
 import logging
-import mysql.connector
-from fastapi import FastAPI, Form, HTTPException
-from fastapi.responses import FileResponse
+import pymysql
+from fastapi import FastAPI, Path
 from fastapi.middleware.cors import CORSMiddleware
 
-class App:
-    def __init__(self):
-        self.app = FastAPI(debug=True)
-        self.logger = logging.getLogger("uvicorn")
-        self.logger.level = logging.INFO
-        self.origins = [os.environ.get('FRONT_URL', "http://localhost:3000")]
+app = FastAPI(debug=True)
+
+logger = logging.getLogger("uvicorn")
+logger.level = logging.INFO
+origins = [os.environ.get('FRONT_URL', "http://localhost:3000")]
         
-        self.app.add_middleware(
-            CORSMiddleware,
-            allow_origins=self.origins,
-            allow_credentials=False,
-            allow_methods=["GET", "POST", "PUT", "DELETE"],
-            allow_headers=["*"],
-        )
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=origins,
+    allow_credentials=False,
+    allow_methods=["GET", "POST", "PUT", "DELETE"],
+    allow_headers=["*"],
+)
 
-        self.db = self.connect_to_database()
-        
-    def connect_to_database(self):
-        db = mysql.connector.connect(
-            host=os.environ.get("DB_HOST", "localhost"),
-            port=int(os.environ.get("DB_PORT", 3306)),
-            user=os.environ.get("DB_USER"),
-            password=os.environ.get("DB_PASSWORD"),
-            database=os.environ.get("DB_NAME")
-        )
+def connect_to_database():
+    db = pymysql.connect(
+        host=os.environ.get("DB_HOST", "localhost"),
+        port=int(os.environ.get("DB_PORT", 3306)),
+        user=os.environ.get("DB_USER","root"),
+        password=os.environ.get("DB_PASSWORD"),
+        database=os.environ.get("DB_NAME")
+    )
 
-        return db
-       
-    def root(self):
-        return {"message": "Hello, world!"}
-    
-    def preview(self):
-        query = "SELECT * FROM your_table_name LIMIT 5"
-        with self.db.cursor() as cursor:
-            cursor.execute(query)
-            results = cursor.fetchall()
-        return results
-    
+    return db
 
-def main():
-    app_instance = App()
-    app = app_instance.app
+db = connect_to_database()
 
-    app.get("/")(app_instance.root)
-    app.get("/preview")(app_instance.preview)
-    
-    return app
+@app.get("/")
+async def root():
+    return {"message": "Hello, world!"}
 
-app = main()
+@app.get("/office_hour_course/{course_num}")
+async def get_office_hour(course_num: str):
+    query = '''
+        select name as student_name, 
+        case day_of_week 
+            when '1' then 'Sunday'
+            when '2' then 'Monday'
+            when '3' then 'Tuesday'
+            when '4' then 'Wednesday'
+            when '5' then 'Thursday'
+            when '6' then 'Friday'
+            when '7' then 'Saturday'
+        end as 'day', 
+        start_time, end_time, 
+        ifnull(room,'No room assigned') as room, 
+        ifnull(zoomlink,"No link available") as zoomlink 
+        from course 
+        left join TA using (course_id) 
+        left join student using (student_id)
+        left join office_hour using (Ta_id)
+        where course_num = %s
+        order by course_num, day_of_week, start_time, end_time;
+    '''
+    with db.cursor() as cursor:
+        cursor.execute(query, (course_num,))
+        results = cursor.fetchall()
+    return results
+
 
 # $ uvicorn main:app --reload --port 9000
