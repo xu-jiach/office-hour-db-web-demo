@@ -1,7 +1,9 @@
 .header{
-    color: aquamarine;
+    color: dodgerblue;
     display: flex;
     justify-content: center;
     align-items: center;
     font-size: 2em;
+    padding-top: 10px;
+    margin-top: 10px;
 }

@@ -1,21 +1,21 @@
 import React, { useState, useEffect } from "react";
 import Table from 'react-bootstrap/Table';
-import "./GetAllOfficeHour.css"
+
 
 const server = process.env.REACT_APP_API_URL || 'http://127.0.0.1:9000';
 
-const GetAllOfficeHour = ({ item: courseNum }) => {
+const GetNextOH = ({ item: courseNum }) => {
   const [hours, setHours] = useState([]);
 
   useEffect(() => {
-    fetch(`${server}/office_hour_course/${courseNum}`)
+    fetch(`${server}/next_oh/${courseNum}`)
       .then(response => response.json())
       .then(data => setHours(data));
   }, [courseNum]);
 
     return (
         <div>
-            <h1>Office Hours for Course {courseNum}</h1>
+            <h1>Next Office Hours for Course {courseNum}</h1>
             <Table bordered className="OHtable">
                 <thead>
                     <tr>
@@ -44,4 +44,4 @@ const GetAllOfficeHour = ({ item: courseNum }) => {
     );
 }
 
-export default GetAllOfficeHour;
+export default GetNextOH;

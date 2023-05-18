@@ -1,22 +1,73 @@
+import React, { useState } from 'react';
+import './App.css'
 import Header from "./components/header/Header";
-import SelectCourse from "./components/SelectCourse/selectCourse";
+import SelectionButton from "./components/SelectionButton/SelectionButton";
+import SelectCourse from "./components/SelectCourse/SelectCourse";
+import SelectStudent from "./components/SelectStudent/SelectStudent";
+import GetStudentOH from "./components/getstudentoh/GetStudentOH";
 import GetAllOfficeHour from "./components/getalloh/GetAllOfficeHour";
-import React, { useState } from "react";
+import GetNextOH from './components/GetNextOH/GetNextOH';
+import Selection2ChoiceButton from "./components/GetExactOH/Selection2ChoiceButton/Selection2ChoiceButton";
+
 
 const App = () => {
-  const [selectedCourse, setSelectedCourse] = useState(null);
+  const [activeButton, setActiveButton] = useState(null);
 
-  const handleCourseSelect = (courseNum) => {
-      setSelectedCourse(courseNum);
+  const handleButtonActivation = (buttonId) => {
+    setActiveButton(buttonId);
+  }
+
+  const handleButtonDeactivation = () => {
+    setActiveButton(null);
   };
 
   return (
-      <div>
-          <Header />
-          <SelectCourse onCourseSelect={handleCourseSelect} />
-          {selectedCourse && <GetAllOfficeHour courseNum={selectedCourse} />}
+    <div className='EntireBG'>
+      <Header />
+      <div className='Grid'>
+        {activeButton !== 'student' && activeButton !== 'all' && activeButton !== 'next' && (
+          <SelectionButton
+            selectionComponent={SelectCourse}
+            displayComponent={GetAllOfficeHour}
+            buttonLabel="View Office Hour by Course"
+            onActivation={() => handleButtonActivation('course')}
+            onDeactivation={handleButtonDeactivation}
+          />
+        )}
       </div>
-  );  
-  };
+      <div className='Grid'>
+        {activeButton !== 'course' && activeButton !== 'all' && activeButton !== 'next' &&  (
+          <SelectionButton
+            selectionComponent={SelectStudent}
+            displayComponent={GetStudentOH}
+            buttonLabel="View Office Hour by Student"
+            onActivation={() => handleButtonActivation('student')}
+            onDeactivation={handleButtonDeactivation}
+          />
+        )}
+      </div>
+      <div className='Grid'>
+        {activeButton !== 'course' && activeButton !== 'student' && activeButton !== 'next'  && (
+          <Selection2ChoiceButton
+            buttonLabel="View Office Hour by TA and Course"
+            onActivation={() => handleButtonActivation('all')}
+            onDeactivation={handleButtonDeactivation}
+          />
+        )}
+      </div>
+      <div className='Grid'>
+        {activeButton !== 'student' && activeButton !== 'all' && activeButton !== 'course' &&(
+          <SelectionButton
+            selectionComponent={SelectCourse}
+            displayComponent={GetNextOH}
+            buttonLabel="View Next Office Hour by Course"
+            onActivation={() => handleButtonActivation('next')}
+            onDeactivation={handleButtonDeactivation}
+          />
+        )}
+      </div>
+    </div>
+  );
+}
 
 export default App;

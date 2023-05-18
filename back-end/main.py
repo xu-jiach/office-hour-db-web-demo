@@ -120,7 +120,7 @@ async def get_office_hour(course_num: str = Query(...), TA_name: str = Query(...
 @app.get("/student")
 async def getStudent():
     query = '''
-        select * from student;
+        select nuid,name from student;
     '''
     with db.cursor() as cursor:
         cursor.execute(query)
@@ -135,6 +135,27 @@ async def getCourse():
     with db.cursor() as cursor:
         cursor.execute(query)
         results = cursor.fetchall()
+    return results
+
+@app.get("/ta/{course_name}")
+async def getTA(course_name:str):
+    query = '''
+        select course_num, student.name from ta
+        left join course on ta.course_id=course.course_id
+        left join student on ta.student_id=student.student_id
+        where course_num = %s;
+    '''
+    with db.cursor() as cursor:
+        cursor.execute(query,(course_name,))
+        results = cursor.fetchall()
+    return results
+
+@app.get("/next_oh/{course_num}")
+async def getNextOH(course_num: str):
+    with db.cursor() as cursor:
+        # Call Stored Procedure
+            cursor.callproc('nextofficehour_forthatCourse', [course_num])
+            results = cursor.fetchall()
     return results
 
 # $ uvicorn main:app --reload --port 9000

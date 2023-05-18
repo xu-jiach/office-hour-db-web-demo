@@ -1,0 +1,7 @@
+.Grid {
+    /* button align in center */
+    text-align: center;
+    justify-items: center;
+    align-items: center;
+    margin: 50px;
+  }

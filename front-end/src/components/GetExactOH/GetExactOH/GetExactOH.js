@@ -1,24 +1,29 @@
 import React, { useState, useEffect } from "react";
 import Table from 'react-bootstrap/Table';
-import "./GetAllOfficeHour.css"
+// import "./GetExactOH.css"
 
 const server = process.env.REACT_APP_API_URL || 'http://127.0.0.1:9000';
 
-const GetAllOfficeHour = ({ item: courseNum }) => {
+const GetExactOH = ({courseNum, TA_name}) => {
   const [hours, setHours] = useState([]);
 
   useEffect(() => {
-    fetch(`${server}/office_hour_course/${courseNum}`)
-      .then(response => response.json())
-      .then(data => setHours(data));
-  }, [courseNum]);
+    fetch(`${server}/exactoh?course_num=${courseNum}&TA_name=${TA_name}`)
+        .then(response => response.json())
+        .then(data => {
+            console.log(data);
+            setHours(data);
+
+        });
+  }, [courseNum, TA_name]);
 
     return (
         <div>
-            <h1>Office Hours for Course {courseNum}</h1>
+            <h1>Office Hours for Course {courseNum} and TA {TA_name}</h1>
             <Table bordered className="OHtable">
                 <thead>
                     <tr>
+                        <th>courseNum</th>
                         <th>TA Name</th>
                         <th>Day</th>
                         <th>Start Time</th>
@@ -32,10 +37,11 @@ const GetAllOfficeHour = ({ item: courseNum }) => {
                         <tr key={index}>
                             <td>{hour[0]}</td>
                             <td>{hour[1]}</td>
-                            <td>{new Date(hour[2] * 1000).toISOString().substr(11, 8)}</td>
+                            <td>{hour[2]}</td>
                             <td>{new Date(hour[3] * 1000).toISOString().substr(11, 8)}</td>
-                            <td>{hour[4]}</td>
+                            <td>{new Date(hour[4] * 1000).toISOString().substr(11, 8)}</td>
                             <td>{hour[5]}</td>
+                            <td>{hour[6]}</td>
                         </tr>
                     ))}
                 </tbody>
@@ -44,4 +50,4 @@ const GetAllOfficeHour = ({ item: courseNum }) => {
     );
 }
 
-export default GetAllOfficeHour;
+export default GetExactOH;
