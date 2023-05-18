@@ -1,7 +1,7 @@
-.Header{
+.header{
+    color: aquamarine;
     display: flex;
     justify-content: center;
     align-items: center;
-    height: 100vh;
     font-size: 2em;
 }

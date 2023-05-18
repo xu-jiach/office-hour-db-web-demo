@@ -1,0 +1,16 @@
+.OHtable {
+    width: 100%;  /* Make table take up full width of container */
+    border-collapse: collapse;  /* Merge borders */
+  }
+  
+.OHtable th, td {
+    border: 1px solid black;  /* Add borders to cells */
+    text-align: left;  /* Align text to the left */
+    padding: 8px;  /* Add padding to cells */
+  }
+  
+.OHtable th {
+    background-color: darkcyan;  /* Change background color of header cells */
+    color: white;  /* Change text color of header cells */
+  }
+  

@@ -1,6 +1,8 @@
+import './Header.css';
+
 function Header(){
     return(
-        <h1>
+        <h1 className="header">
             Office Hours
         </h1>
     );
