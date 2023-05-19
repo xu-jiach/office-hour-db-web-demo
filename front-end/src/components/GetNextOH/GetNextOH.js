@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import Table from 'react-bootstrap/Table';
-
+import "./GetNextOH.css";
 
 const server = process.env.REACT_APP_API_URL || 'http://127.0.0.1:9000';
 
@@ -15,7 +15,7 @@ const GetNextOH = ({ item: courseNum }) => {
 
     return (
         <div>
-            <h1>Next Office Hours for Course {courseNum}</h1>
+            <h1 className="TableTitle">Next Office Hours for Course {courseNum}</h1>
             <Table bordered className="OHtable">
                 <thead>
                     <tr>

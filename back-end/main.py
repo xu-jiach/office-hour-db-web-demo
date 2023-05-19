@@ -83,6 +83,10 @@ async def get_oh_student(student_name: str):
         left join office_hour using (TA_id)
         left join student as TAinformation on TAinformation.student_id = TA.student_id
         where student.name = %s
+        AND
+        start_time IS NOT NULL 
+        AND 
+        end_time IS NOT NULL
         order by course_num, day_of_week, start_time, end_time;
     '''
     with db.cursor() as cursor:

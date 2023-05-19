@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import Table from 'react-bootstrap/Table';
-// import "./GetExactOH.css"
+import "./GetExactOH.css"
 
 const server = process.env.REACT_APP_API_URL || 'http://127.0.0.1:9000';
 
@@ -19,7 +19,7 @@ const GetExactOH = ({courseNum, TA_name}) => {
 
     return (
         <div>
-            <h1>Office Hours for Course {courseNum} and TA {TA_name}</h1>
+            <h1 className="TableTitle">Office Hours for Course {courseNum} and TA {TA_name}</h1>
             <Table bordered className="OHtable">
                 <thead>
                     <tr>

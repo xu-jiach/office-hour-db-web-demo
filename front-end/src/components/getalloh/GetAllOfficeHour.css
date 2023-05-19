@@ -3,15 +3,25 @@
     border-collapse: collapse;  /* Merge borders */
   }
   
-.OHtable th, td {
-    border: 1px solid black;  /* Add borders to cells */
+.OHtable th, td{
+    border: 1px solid white;  /* Add borders to cells */
     text-align: left;  /* Align text to the left */
     padding: 8px;  /* Add padding to cells */
+    color:black;
   }
   
 .OHtable.table th {
+    border: 1px solid white;  /* Add borders to cells */
     background-color: darkcyan ;  /* Change background color of header cells */
-    color: whitesmoke;  /* Change text color of header cells */
-    border-color: aliceblue;
+    color: aliceblue;  /* Change text color of header cells */
   }
-  
+
+.OHtable.table td {
+    background-color: aliceblue;  /* Change background color of header cells */
+    color: black;  /* Change text color of header cells */
+    border-color: white; 
+  }
+
+.TableTitle{
+  color: aliceblue;
+}

@@ -8,7 +8,8 @@ import GetStudentOH from "./components/getstudentoh/GetStudentOH";
 import GetAllOfficeHour from "./components/getalloh/GetAllOfficeHour";
 import GetNextOH from './components/GetNextOH/GetNextOH';
 import Selection2ChoiceButton from "./components/GetExactOH/Selection2ChoiceButton/Selection2ChoiceButton";
-
+import Card from "react-bootstrap/Card";
+import CardImg from 'react-bootstrap/esm/CardImg';
 
 const App = () => {
   const [activeButton, setActiveButton] = useState(null);
@@ -23,6 +24,9 @@ const App = () => {
 
   return (
     <div className='EntireBG'>
+      <Card className='Body'>
+      <Card.Img src={process.env.PUBLIC_URL + "/college.jpg"} alt="Logo" className='BodyImg' />
+      <Card.ImgOverlay>
       <Header />
       <div className='Grid'>
         {activeButton !== 'student' && activeButton !== 'all' && activeButton !== 'next' && (
@@ -66,6 +70,8 @@ const App = () => {
           />
         )}
       </div>
+      </Card.ImgOverlay>
+      </Card>
     </div>
   );
 }

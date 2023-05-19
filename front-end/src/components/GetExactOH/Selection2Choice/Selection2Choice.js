@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-
+import "./Selection2Choice.css";
 const server = process.env.REACT_APP_API_URL || 'http://127.0.0.1:9000';
 
 function Selection2Choice({ onSelection }) {
@@ -33,7 +33,7 @@ function Selection2Choice({ onSelection }) {
   
 
   return (
-    <div>
+    <div className="TAandCourseList">
       <h1>TA and Course List</h1>
       <select onChange={handleCourseSelect}>
         <option value="0">Select Course</option>

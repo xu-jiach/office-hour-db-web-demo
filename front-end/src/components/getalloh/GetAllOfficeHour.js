@@ -15,7 +15,7 @@ const GetAllOfficeHour = ({ item: courseNum }) => {
 
     return (
         <div>
-            <h1>Office Hours for Course {courseNum}</h1>
+            <h1 className="TableTitle">Office Hours for Course {courseNum}</h1>
             <Table bordered className="OHtable">
                 <thead>
                     <tr>
